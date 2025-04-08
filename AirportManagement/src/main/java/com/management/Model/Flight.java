@@ -3,6 +3,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Set;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,13 +26,20 @@ public class Flight {
 	
 	LocalTime checkIn;
 	
-	@ManyToOne
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "DEPARTURE_AIRPORT_ID_AIRPORT", nullable = true)
+	@OnDelete(action = OnDeleteAction.SET_NULL) 
 	Airport departureAirport;
 	
-	@ManyToOne
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "ARRIVAL_AIRPORT_ID_AIRPORT", nullable = true)
+	@OnDelete(action = OnDeleteAction.SET_NULL) 
 	Airport arrivalAirport;
 	
-	@ManyToOne
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "AIRPLANE_ID_AIRPLANE", nullable = true)
+	@OnDelete(action = OnDeleteAction.SET_NULL) 
 	Airplane airplane;
 	
 	@ManyToMany
