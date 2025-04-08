@@ -9,7 +9,8 @@ import lombok.*;
 @Entity
 public class Airplane {
 	@Id
-	String idAirplane;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Integer idAirplane;
 	
 	int seatAmount;
 	

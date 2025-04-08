@@ -22,12 +22,19 @@ public class AirportController {
 	
 	@GetMapping("/findAirportById/{id}")
 	public @ResponseBody ResponseEntity<Object> getAirport(@PathVariable String id){
-		Airport airport = airportRepository.findById(id).orElse(null);
-		if(airport == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Couldn't find airport with ID: " + id);
+		try {
+			Integer aid = Integer.parseInt(id);
+			Airport airport = airportRepository.findById(aid).orElse(null);
+			if(airport == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	                    .body("Couldn't find airport with ID: " + aid);
+			}
+			return ResponseEntity.ok(airport);
 		}
-		return ResponseEntity.ok(airport);
+		catch(NumberFormatException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Invalid ID format: '" + id + "'. Must be an integer.");
+		}
 	}
 	
 	@GetMapping("/findAllAirports")
@@ -42,12 +49,18 @@ public class AirportController {
 	
 	@DeleteMapping("/deleteAirport/{id}")
 	public String deleteAirport(@PathVariable String id) {
-		if(airportRepository.existsById(id)) {
-			airportRepository.deleteById(id);
-			return "Airport with ID " + " has beed deleted.";
+		try {
+			Integer aid = Integer.parseInt(id);
+			if(airportRepository.existsById(aid)) {
+				airportRepository.deleteById(aid);
+				return "Airport with ID " + " has beed deleted.";
+			}
+			else {
+				return "No airport found with ID: " + aid; 
+			}
 		}
-		else {
-			return "No airport found with ID: " + id; 
+		catch(NumberFormatException e) {
+			return "Invalid ID format: '" + id + "'. Must be an integer.";
 		}
 	}
 }

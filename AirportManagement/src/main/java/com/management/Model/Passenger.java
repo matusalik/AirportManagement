@@ -11,6 +11,9 @@ import lombok.*;
 @Entity
 public class Passenger {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Integer idPassenger;
+	
 	String passportId;
 	
 	String name;

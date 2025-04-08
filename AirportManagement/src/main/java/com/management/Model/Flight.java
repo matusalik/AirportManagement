@@ -18,7 +18,8 @@ import lombok.Setter;
 @Entity
 public class Flight {
 	@Id
-	int idFlight;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Integer idFlight;
 	
 	LocalDate departureDate;
 	

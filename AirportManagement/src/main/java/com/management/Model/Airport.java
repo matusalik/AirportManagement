@@ -10,7 +10,10 @@ import jakarta.persistence.*;
 @Entity
 public class Airport {
 	@Id
-	String idAirport;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Integer idAirport;
+	
+	String airportCode;
 	
 	String city;
 }

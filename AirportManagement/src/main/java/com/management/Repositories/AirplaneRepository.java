@@ -4,6 +4,6 @@ import org.springframework.stereotype.Repository;
 
 import com.management.Model.Airplane;
 
-public interface AirplaneRepository extends CrudRepository<Airplane, String>{
+public interface AirplaneRepository extends CrudRepository<Airplane, Integer>{
 
 }
