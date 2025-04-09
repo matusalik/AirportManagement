@@ -27,7 +27,6 @@ public class Flight {
 	
 	LocalTime checkIn;
 	
-	
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "DEPARTURE_AIRPORT_ID_AIRPORT", nullable = true)
 	@OnDelete(action = OnDeleteAction.SET_NULL) 
