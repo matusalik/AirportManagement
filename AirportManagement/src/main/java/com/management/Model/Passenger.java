@@ -22,6 +22,6 @@ public class Passenger {
 	
 	LocalDate birthDate;
 	
-	@ManyToMany
+	@ManyToMany(mappedBy = "passengerList")
 	Set<Flight> flights;
 }

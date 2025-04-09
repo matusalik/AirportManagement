@@ -43,5 +43,10 @@ public class Flight {
 	Airplane airplane;
 	
 	@ManyToMany
+	@JoinTable(
+		name = "FLIGHT_PASSENGER",
+		joinColumns = @JoinColumn(name = "ID_FLIGHT"),
+		inverseJoinColumns = @JoinColumn(name = "ID_PASSENGER")
+	)
 	Set<Passenger>passengerList;
 }
