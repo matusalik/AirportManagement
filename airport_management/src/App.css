@@ -4,6 +4,10 @@
   padding: 20px;
 }
 
+body{
+  background-color: rgb(236, 207, 163);
+}
+
 table {
   width: 80%;
   margin: 20px auto;
