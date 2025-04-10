@@ -27,14 +27,12 @@ public class Flight {
 	
 	LocalTime checkIn;
 	
-	@ManyToOne(optional = true)
-	@JoinColumn(name = "DEPARTURE_AIRPORT_ID_AIRPORT", nullable = true)
-	@OnDelete(action = OnDeleteAction.SET_NULL) 
+	@ManyToOne
+	@JoinColumn(name = "DEPARTURE_AIRPORT_ID_AIRPORT")
 	Airport departureAirport;
 	
-	@ManyToOne(optional = true)
-	@JoinColumn(name = "ARRIVAL_AIRPORT_ID_AIRPORT", nullable = true)
-	@OnDelete(action = OnDeleteAction.SET_NULL) 
+	@ManyToOne
+	@JoinColumn(name = "ARRIVAL_AIRPORT_ID_AIRPORT")
 	Airport arrivalAirport;
 	
 	@ManyToOne(optional = true)
