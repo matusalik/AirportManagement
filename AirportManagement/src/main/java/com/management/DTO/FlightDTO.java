@@ -19,7 +19,7 @@ public class FlightDTO {
 	Integer idFlight;
 	LocalDate departureDate;
 	LocalDate arrivalDate;
-	LocalTime chekIn;
+	LocalTime checkIn;
 	Airport departureAirport;
 	Airport arrivalAirport;
 	Airplane airplane;
@@ -29,7 +29,7 @@ public class FlightDTO {
 		this.idFlight = flight.getIdFlight();
 		this.departureDate = flight.getDepartureDate();
 		this.arrivalDate = flight.getArrivalDate();
-		this.chekIn = flight.getCheckIn();
+		this.checkIn = flight.getCheckIn();
 		this.departureAirport = flight.getDepartureAirport();
 		this.arrivalAirport = flight.getArrivalAirport();
 		this.airplane = flight.getAirplane();
