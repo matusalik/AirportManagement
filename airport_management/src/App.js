@@ -1,19 +1,22 @@
 import React from 'react';
 import './App.css';
-import FlightsList from './components/FlightsList';
-import PassenegerList from './components/PassengerList';
-import AirportsList from './components/AirportsList';
-import AirplanesList from './components/AirplanesList';
+import{
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 
 function App() {
   return (
     <div className="App">
-      <HomePage/>
-      {/*<FlightsList />
-      <PassenegerList/>
-      <AirportsList/>
-      <AirplanesList/>*/}
+      <Router>
+        <Routes>
+          <Route path="/" element={<LoginPage/>}/>
+          <Route path="/home" element={<HomePage/>}/>
+        </Routes>
+      </Router>
     </div>
   );
 }

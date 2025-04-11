@@ -1,0 +1,44 @@
+.outerLogin{
+    margin-top:50px;
+    margin-left:50px;
+    margin-right:50px;
+    background-color:bisque;
+    border-radius: 20px;
+    border-style: solid;
+    border-color: black;
+}
+
+.innerLogin{
+    margin:30px;
+    background-color:bisque;
+    border-radius: 20px;
+    border-style: solid;
+    border-color: black;
+}
+
+.loginPageInput{
+    margin: 10px;
+    width: 300px;
+    height: 30px;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.loginPageButton{
+    margin: 10px;
+    width: 300px;
+    height: 30px;
+    font-size: 20px;
+}
+
+.errorLabel{
+    display: block;
+    margin-bottom: 10px;
+    font-size: 26.5px;
+    color: red;
+}
+
+h2{
+    margin-top:10px;
+    margin-bottom: 5px;
+}
