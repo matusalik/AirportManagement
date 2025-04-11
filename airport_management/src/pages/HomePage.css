@@ -21,6 +21,7 @@
     width: 300px;
     height: 30px;
     font-size: 20px;
+    border-radius: 10px;
 }
 
 .homePageButton{
@@ -28,6 +29,13 @@
     width: 300px;
     height: 30px;
     font-size: 20px;
+}
+
+.errorLabel{
+    display: block;
+    margin-bottom: 10px;
+    font-size: 26.5px;
+    color: red;
 }
 
 h2{
