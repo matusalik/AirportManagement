@@ -1,3 +1,7 @@
+INSERT INTO APP_USER (USER_LOGIN, USER_PASSWORD) VALUES ('root', 'root');
+INSERT INTO APP_USER (USER_LOGIN, USER_PASSWORD) VALUES ('sysop', 'sysop');
+INSERT INTO APP_USER (USER_LOGIN, USER_PASSWORD) VALUES ('admin', 'admin');
+
 -- Lotniska (ID generowane automatycznie)
 INSERT INTO AIRPORT (AIRPORT_CODE, CITY) VALUES ('KAT', 'Katowice');        -- id = 1
 INSERT INTO AIRPORT (AIRPORT_CODE, CITY) VALUES ('JFK', 'New York');        -- id = 2
