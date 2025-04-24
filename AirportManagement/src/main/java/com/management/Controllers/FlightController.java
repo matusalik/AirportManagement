@@ -12,14 +12,20 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.management.DTO.FlightDTO;
+import com.management.Model.Airplane;
+import com.management.Model.Airport;
 import com.management.Model.Flight;
 import com.management.Model.Passenger;
+import com.management.Repositories.AirplaneRepository;
+import com.management.Repositories.AirportRepository;
 import com.management.Repositories.FlightRepository;
 import com.management.Repositories.PassengerRepository;
 
@@ -31,6 +37,12 @@ public class FlightController {
 	
 	@Autowired
 	PassengerRepository passengerRepository;
+	
+	@Autowired
+	AirportRepository airportRepository;
+	
+	@Autowired
+	AirplaneRepository airplaneRepository;
 	
 	@GetMapping("/findAllFlights")
 	public @ResponseBody Iterable<FlightDTO>getFlights(){
@@ -103,6 +115,57 @@ public class FlightController {
 				flightRepository.delete(flight);
 				return ResponseEntity.ok("Flight with ID " + fid + " has been deleted.");
 			}
+		}
+		catch(NumberFormatException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	                .body("Invalid ID format: '" + id + "'. Must be an integer.");
+		}
+	}
+	
+	@PutMapping("/updateFlight/{id}")
+	public ResponseEntity<String>updateFlight(@PathVariable String id, @RequestBody FlightDTO dto){
+		try {
+			Integer fid = Integer.parseInt(id);
+			Flight flight = flightRepository.findById(fid).orElse(null);
+			if(flight == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	                    .body("No flight found with ID: " + fid);
+			}
+			if(dto.getDepartureDate() != null) {
+				flight.setDepartureDate(dto.getDepartureDate());
+			}
+			if(dto.getArrivalDate() != null) {
+				flight.setArrivalDate(dto.getArrivalDate());
+			}
+			if(dto.getCheckIn() != null) {
+				flight.setCheckIn(dto.getCheckIn());
+			}
+			if(dto.getDepartureAirport() != null) {
+				Airport depAirport = airportRepository.findById(dto.getDepartureAirport().getIdAirport()).orElse(null);
+				if(depAirport == null) {
+					return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	                        .body("Departure airport not found.");
+				}
+				flight.setDepartureAirport(depAirport);
+			}
+			if(dto.getArrivalAirport() != null) {
+				Airport arrAirport = airportRepository.findById(dto.getArrivalAirport().getIdAirport()).orElse(null);
+				if(arrAirport == null) {
+					return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	                        .body("Arrival airport not found.");
+				}
+				flight.setArrivalAirport(arrAirport);
+			}
+			if(dto.getAirplane() != null) {
+				Airplane airplane = airplaneRepository.findById(dto.getAirplane().getIdAirplane()).orElse(null);
+				if(airplane == null) {
+					return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	                        .body("Airplane not found.");
+				}
+				flight.setAirplane(airplane);
+			}
+			flightRepository.save(flight);
+			return ResponseEntity.ok("Flight with ID " + fid + " updated successfully.");
 		}
 		catch(NumberFormatException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)

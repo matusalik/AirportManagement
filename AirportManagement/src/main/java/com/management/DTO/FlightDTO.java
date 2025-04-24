@@ -11,10 +11,12 @@ import com.management.Model.Flight;
 import com.management.Model.Passenger;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class FlightDTO {
 	Integer idFlight;
 	LocalDate departureDate;
