@@ -5,8 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -68,4 +70,45 @@ public class AirplaneController {
 			return "Invalid ID format: '" + id + "'. Must be an integer.";
 		}
 	}
+	@PatchMapping("/updateAirplane/{id}")
+	public ResponseEntity<String>updateAirplane(@PathVariable String id, @RequestBody Airplane air){
+		try {
+			Integer aid = Integer.parseInt(id);
+			Airplane airplane = airplaneRepository.findById(aid).orElse(null);
+			if(airplane == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	                    .body("No airplane found with ID: " + aid);
+			}
+			if(air.getModel() != null) {
+				airplane.setModel(air.getModel());
+			}
+			if(air.getSeatAmount() != null) {
+				airplane.setSeatAmount(air.getSeatAmount());
+			}
+			airplaneRepository.save(airplane);
+			return ResponseEntity.ok("Airplane with ID " + aid + " updated successfully.");
+		}
+		catch(NumberFormatException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	                .body("Invalid ID format: '" + id + "'. Must be an integer.");
+		}
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

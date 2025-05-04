@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,6 +56,12 @@ public class PassengerController {
                 .collect(Collectors.toList());
 	}
 	
+	
+	@PostMapping("/addPassenger")
+	public Passenger addPassenger(@RequestBody Passenger passenger) {
+		return passengerRepository.save(passenger);
+	}
+	
 	@DeleteMapping("/deletePassenger/{id}")
 	public String deleteAirport(@PathVariable String id) {
 		try {
@@ -77,10 +84,35 @@ public class PassengerController {
 			return "Invalid ID format: '" + id + "'. Must be an integer.";
 		}
 	}
-	
-	@PostMapping("/addPassenger")
-	public Passenger addPassenger(@RequestBody Passenger passenger) {
-		return passengerRepository.save(passenger);
+	@PatchMapping("/updatePassenger/{id}")
+	public ResponseEntity<String>updatePassenger(@PathVariable String id, @RequestBody PassengerDTO dto){
+		try {
+			Integer pid = Integer.parseInt(id);
+			Passenger pass = passengerRepository.findById(pid).orElse(null);
+			if(pass == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	                    .body("No airplane found with ID: " + pid);
+			}
+			if(dto.getPassportId() != null) {
+				pass.setPassportId(dto.getPassportId());
+			}
+			if(dto.getName() != null) {
+				pass.setName(dto.getName());
+			}
+			if(dto.getSurname() != null) {
+				pass.setSurname(dto.getSurname());
+			}
+			if(dto.getBirthDate() != null) {
+				pass.setBirthDate(dto.getBirthDate());
+			}
+			passengerRepository.save(pass);
+			return ResponseEntity.ok("Passenger with ID " + pid + " updated successfully.");
+				
+		}
+		catch(NumberFormatException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	                .body("Invalid ID format: '" + id + "'. Must be an integer.");
+		}
 	}
 }
 

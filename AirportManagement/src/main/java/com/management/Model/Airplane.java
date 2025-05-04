@@ -12,7 +12,7 @@ public class Airplane {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer idAirplane;
 	
-	int seatAmount;
+	Integer seatAmount;
 	
 	String model;
 }
