@@ -173,6 +173,30 @@ public class FlightController {
 	                .body("Invalid ID format: '" + id + "'. Must be an integer.");
 		}
 	}
+	@PutMapping("/putFlight/{id}")
+	public ResponseEntity<String>putFlight(@PathVariable String id, @RequestBody FlightDTO dto){
+		try {
+			Integer fid = Integer.parseInt(id);
+			Flight flight = flightRepository.findById(fid).orElse(null);
+			if(flight == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	                    .body("No flight found with ID: " + fid);
+			}
+			flight.setAirplane(dto.getAirplane());
+			flight.setArrivalAirport(dto.getArrivalAirport());
+			flight.setArrivalDate(dto.getArrivalDate());
+			flight.setCheckIn(dto.getCheckIn());
+			flight.setDepartureAirport(dto.getDepartureAirport());
+			flight.setDepartureDate(dto.getDepartureDate());
+			flightRepository.save(flight);
+			return ResponseEntity.ok("Flight with ID " + fid + " updated successfully.");
+			
+		}
+		catch(NumberFormatException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	                .body("Invalid ID format: '" + id + "'. Must be an integer.");
+		}
+	}
 }
 
 

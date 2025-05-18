@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -108,6 +109,28 @@ public class PassengerController {
 			passengerRepository.save(pass);
 			return ResponseEntity.ok("Passenger with ID " + pid + " updated successfully.");
 				
+		}
+		catch(NumberFormatException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	                .body("Invalid ID format: '" + id + "'. Must be an integer.");
+		}
+	}
+	
+	@PutMapping("/putPassenger/{id}")
+	public ResponseEntity<String>putPassenger(@PathVariable String id, @RequestBody PassengerDTO dto){
+		try {
+			Integer pid = Integer.parseInt(id);
+			Passenger pass = passengerRepository.findById(pid).orElse(null);
+			if(pass == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	                    .body("No passenger found with ID: " + pid);
+			}
+			pass.setBirthDate(dto.getBirthDate());
+			pass.setName(dto.getName());
+			pass.setPassportId(dto.getPassportId());
+			pass.setSurname(dto.getSurname());
+			passengerRepository.save(pass);
+			return ResponseEntity.ok("Passenger with ID " + pid + " updated successfully.");
 		}
 		catch(NumberFormatException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -97,6 +98,26 @@ public class AirportController {
 			if(air.getCity() != null) {
 				airport.setCity(air.getCity());
 			}
+			airportRepository.save(airport);
+			return ResponseEntity.ok("Airport with ID " + aid + " updated successfully.");
+		}
+		catch(NumberFormatException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	                .body("Invalid ID format: '" + id + "'. Must be an integer.");
+		}
+	}
+	
+	@PutMapping("/putAirport/{id}")
+	public ResponseEntity<String>putAirport(@PathVariable String id, @RequestBody Airport air){
+		try {
+			Integer aid = Integer.parseInt(id);
+			Airport airport = airportRepository.findById(aid).orElse(null);
+			if(airport == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	                    .body("No airport found with ID: " + aid);
+			}
+			airport.setAirportCode(air.getAirportCode());
+			airport.setCity(air.getCity());
 			airportRepository.save(airport);
 			return ResponseEntity.ok("Airport with ID " + aid + " updated successfully.");
 		}
