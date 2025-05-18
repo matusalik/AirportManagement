@@ -182,6 +182,10 @@ public class FlightController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND)
 	                    .body("No flight found with ID: " + fid);
 			}
+			if(!isDtoComplete(dto)) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+		                .body("In PutMapping you have to pass full object!");
+			}
 			flight.setAirplane(dto.getAirplane());
 			flight.setArrivalAirport(dto.getArrivalAirport());
 			flight.setArrivalDate(dto.getArrivalDate());
@@ -196,6 +200,15 @@ public class FlightController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 	                .body("Invalid ID format: '" + id + "'. Must be an integer.");
 		}
+	}
+	
+	private boolean isDtoComplete(FlightDTO dto) {
+		return dto.getAirplane() != null &&
+				dto.getArrivalAirport() != null &&
+				dto.getArrivalDate() != null &&
+				dto.getCheckIn() != null &&
+				dto.getDepartureAirport() != null &&
+				dto.getDepartureDate() != null;
 	}
 }
 

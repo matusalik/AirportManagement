@@ -125,6 +125,10 @@ public class PassengerController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND)
 	                    .body("No passenger found with ID: " + pid);
 			}
+			if(!isDtoComplete(dto)) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+		                .body("In PutMapping you have to pass full object!");
+			}
 			pass.setBirthDate(dto.getBirthDate());
 			pass.setName(dto.getName());
 			pass.setPassportId(dto.getPassportId());
@@ -136,6 +140,13 @@ public class PassengerController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 	                .body("Invalid ID format: '" + id + "'. Must be an integer.");
 		}
+	}
+	
+	private boolean isDtoComplete(PassengerDTO dto) {
+		return dto.getBirthDate() != null &&
+				dto.getName() != null &&
+				dto.getPassportId() != null &&
+				dto.getSurname() != null;
 	}
 }
 

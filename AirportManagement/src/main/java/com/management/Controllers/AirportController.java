@@ -116,6 +116,10 @@ public class AirportController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND)
 	                    .body("No airport found with ID: " + aid);
 			}
+			if(!isObjectComplete(air)) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+		                .body("In PutMapping you have to pass full object!");
+			}
 			airport.setAirportCode(air.getAirportCode());
 			airport.setCity(air.getCity());
 			airportRepository.save(airport);
@@ -125,6 +129,11 @@ public class AirportController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 	                .body("Invalid ID format: '" + id + "'. Must be an integer.");
 		}
+	}
+	
+	private boolean isObjectComplete(Airport air) {
+		return air.getAirportCode() != null &&
+				air.getCity() != null;
 	}
 	
 }

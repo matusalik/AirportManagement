@@ -102,6 +102,10 @@ public class AirplaneController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND)
 	                    .body("No airplane found with ID: " + aid);
 			}
+			if(!isObjectComplete(air)) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+		                .body("In PutMapping you have to pass full object!");
+			}
 			airplane.setModel(air.getModel());
 			airplane.setSeatAmount(air.getSeatAmount());
 			airplaneRepository.save(airplane);
@@ -111,6 +115,11 @@ public class AirplaneController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 	                .body("Invalid ID format: '" + id + "'. Must be an integer.");
 		}
+	}
+	
+	private boolean isObjectComplete(Airplane air) {
+		return air.getModel() != null &&
+				air.getSeatAmount() != null;
 	}
 }
 
