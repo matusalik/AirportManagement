@@ -1,7 +1,9 @@
 package com.management.Controllers;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -92,6 +94,31 @@ public class FlightController {
 		    return ResponseEntity.status(HttpStatus.CONFLICT)
 	                .body("Passenger is already assigned to this flight.");
 			
+		}
+		catch(NumberFormatException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Format of either flightId or passengerId is invalid!");
+		}
+	}
+	@DeleteMapping("/removePassengerFromFlight")
+	public ResponseEntity<String>removePassengerFromFlight(@RequestParam String idFlight, @RequestParam String idPass){
+		try {
+			Integer fid = Integer.parseInt(idFlight);
+			Integer pid = Integer.parseInt(idPass);
+			Flight flight = flightRepository.findById(fid).orElse(null);
+			if(flight == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Flight not found.");
+			}
+			Set<Passenger>passengers = flight.getPassengerList();
+			for(Passenger p : passengers) {
+				if(p.getIdPassenger() == pid) {
+					passengers.remove(p);
+					flight.setPassengerList(passengers);
+					flightRepository.save(flight);
+					return ResponseEntity.ok("Passenger succesfully removed from flight.");
+				}
+			}
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Passenger with id: " + pid + " wasn't found in flight with id: " + fid);		
 		}
 		catch(NumberFormatException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
