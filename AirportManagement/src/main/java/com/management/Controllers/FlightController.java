@@ -73,6 +73,25 @@ public class FlightController {
 		}
 	}
 	
+	@PostMapping("/addFlight")
+	public ResponseEntity<String> addFlight(@RequestBody Flight flight){
+		if(!isObjectComplete(flight)) {
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Flight body is incomplete.");
+		}
+		if(!airportRepository.existsById(flight.getDepartureAirport().getIdAirport())) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Departure airport with id: " + flight.getDepartureAirport().getIdAirport() + " doesn't exist.");
+		}
+		if(!airportRepository.existsById(flight.getArrivalAirport().getIdAirport())) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Arrival airport with id: " + flight.getArrivalAirport().getIdAirport() + " doesn't exist.");
+		}
+		if(!airplaneRepository.existsById(flight.getAirplane().getIdAirplane())) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Airplane with id: " + flight.getAirplane().getIdAirplane() + " doesn't exist.");
+		}
+		
+		flightRepository.save(flight);
+		return ResponseEntity.ok("Flight added successfully.");
+	}
+	
 	@PostMapping("/addPassengerToFlight")
 	public ResponseEntity<String> addPassengerToFlight(@RequestParam String flightId, @RequestParam String passengerId){
 		try {
@@ -235,7 +254,18 @@ public class FlightController {
 				dto.getArrivalDate() != null &&
 				dto.getCheckIn() != null &&
 				dto.getDepartureAirport() != null &&
-				dto.getDepartureDate() != null;
+				dto.getDepartureDate() != null && 
+				dto.getPassengerList() != null;
+	}
+	
+	private boolean isObjectComplete(Flight flight) {
+		return flight.getAirplane() != null &&
+				flight.getArrivalAirport() != null &&
+				flight.getArrivalDate() != null &&
+				flight.getCheckIn() != null &&
+				flight.getDepartureAirport() != null &&
+				flight.getDepartureDate() != null && 
+				flight.getPassengerList() != null;
 	}
 }
 

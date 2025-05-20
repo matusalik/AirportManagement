@@ -3,6 +3,7 @@ package com.management.DTO;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.management.Model.Airplane;
@@ -25,7 +26,7 @@ public class FlightDTO {
 	Airport departureAirport;
 	Airport arrivalAirport;
 	Airplane airplane;
-	List<Integer>passengerList;
+	Set<Integer>passengerList;
 	
 	public FlightDTO(Flight flight) {
 		this.idFlight = flight.getIdFlight();
@@ -37,6 +38,6 @@ public class FlightDTO {
 		this.airplane = flight.getAirplane();
 		this.passengerList = flight.getPassengerList().stream()
 				.map(Passenger::getIdPassenger)
-				.collect(Collectors.toList());	
+				.collect(Collectors.toSet());	
 	}
 }
